@@ -11,6 +11,11 @@ enum Action { Graph, Exclude, Time };
 
 // Methodes
 
+void hello ( )
+{
+    cout << "this is a test for github" << endl;
+}
+
 Action convertAction ( char * arg )
 {
     if( strcmp(arg,'-g')==0 )
