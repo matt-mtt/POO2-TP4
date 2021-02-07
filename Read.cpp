@@ -53,14 +53,25 @@ void Read::translate ( )
         getline( file, myLog.IP, '-' );
         getline( file, myLog.userLogName, '-' );
         getline( file, myLog.authenticatedUserName, '[' );
-        getline( file, myLog.date, ':' );
-        getline( file, myLog.time, '+' );
+        getline( file, myLog.date, ':');
+        string shour, smin, ssec;
+        getline( file, shour, ':' );
+        getline( file, smin, ':');
+        getline( file, ssec, '+' );
+        myLog.hour = stoi(shour);
+        myLog.min = stoi(smin);
+        myLog.sec = stoi(ssec);
         getline( file, myLog.GMT_diff, ']' );
         file.ignore();
         file.ignore();
 
         getline( file, myLog.actionType, '/' ); // attention, ne lit pas le /
-        getline( file, myLog.target, '"' );
+        string firstpart;
+        getline( file, firstpart, '.' );
+        getline( file, myLog.targetExtension, ' ' );
+        string lastpart;
+        getline(file, lastpart, '"');
+        myLog.target = firstpart + '.' + myLog.targetExtension;
         file.ignore();
 
         getline( file, myLog.returnCode, ' ' );
@@ -85,10 +96,13 @@ void Read::displayLog ( )
     cout << "userLogName:           " << myLog.userLogName << endl;
     cout << "authenticatedUserName: " << myLog.authenticatedUserName << endl;
     cout << "date:                  " << myLog.date << endl;
-    cout << "time:                  " << myLog.time << endl;
+    cout << "hour:                  " << myLog.hour << endl;
+    cout << "min:                   " << myLog.min << endl;
+    cout << "sec:                   " << myLog.sec << endl;
     cout << "GMT_diff:              " << myLog.GMT_diff << endl;
     cout << "actionType:            " << myLog.actionType << endl;
     cout << "target:                " << myLog.target << endl;
+    cout << "extension:             " << myLog.targetExtension << endl;
     cout << "returnCode:            " << myLog.returnCode << endl;
     cout << "dataAmount:            " << myLog.dataAmount << endl;
     cout << "referer:               " << myLog.referer << endl;

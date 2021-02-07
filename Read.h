@@ -27,11 +27,14 @@ typedef struct Log
     string authenticatedUserName;
 
     string date;
-    string time;
+    int hour;
+    int min;
+    int sec;
     string GMT_diff;
 
     string actionType;
     string target;
+    string targetExtension;
 
     string returnCode;
     string dataAmount;
@@ -78,7 +81,7 @@ public:
 
     Log getMyLog ( );
     // Mode d'emploi :
-    // Renvoie le dernier log 
+    // Renvoie le dernier log
     // Contrat :
     //
 

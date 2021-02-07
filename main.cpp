@@ -1,5 +1,6 @@
 // Includes
 #include "Read.h"
+#include "Graph.h"
 #include <string>
 #include <cstring>
 #include <iostream>
@@ -11,23 +12,42 @@ bool doGraph = false;
 bool typeSelection = false;
 bool timeSelection = false;
 string fichierDot;
-string hour;
+int hour;
 
 // Methodes
 
 void getActions ( int argc, char * argv[] )
 {
-    for ( int i=1; i<argc; i++)
+    for ( int i=0; i<argc; i++)
     {
       if (strcmp(argv[i],"-g") == 0 )
+      {
         doGraph = true;
         fichierDot = argv[i+1];
+      }
       if (strcmp(argv[i],"-e") == 0 )
+      {
         typeSelection = true;
+      }
       if (strcmp(argv[i],"-t") == 0 )
-        timeSelectoin = true;
-        hour = argv[i+1];
+      {
+        timeSelection = true;
+        hour = atoi(argv[i+1]);
+      }
     }
+
+     cout << "TYPE Selection --> " << typeSelection << endl;
+     cout << "TIME Selection --> " << timeSelection <<endl;
+     cout << "GRAPH --> " << doGraph << endl;
+}
+
+void displayArgs( int argc, char * argv[] )
+{
+  for( int i=0; i<=argc; i++ )
+  {
+    cout << argv[i] << endl;
+  }
+
 }
 
 // ./analog =  arg[0]
@@ -39,47 +59,54 @@ void getActions ( int argc, char * argv[] )
 // nomfichier.log = arg[6]
 int main ( int argc, char * argv[] )
 {
-    /* 1) le lis une ligne et j'en fais un log
-    2) j'ajoute le lien si il n'existe pas
-    3) quand il existe, j'ajoute la cible à sa map
-    4) en foncton de l'action, j'affiche */
-
+    //displayArgs(argc, argv);
+    getActions(argc, argv);
     Read myRead = Read ( );
+    // Graph myGraph = Graph();
 
-    myRead.openFile( "log.txt" ); // argv[6]
+    myRead.openFile( "log.txt" );
+    Graph myGraph = Graph();
 
+    // Ajout des logs
     while ( myRead.endOfFile( ) == false )
     {
             Log newLog;
-            //Graph myGraph;
-
             myRead.translate( );
-
-            // switch ?
-
-
             newLog = myRead.getMyLog();
 
-            if  ( typeSelection == true )
+            if ( typeSelection == true )
             {
-              //check
-              // add to graph   //myGraph.addLog( newLog.target, newLog.referer );
+              if ( newLog.targetExtension.compare("css") != 0 || newLog.targetExtension.compare("jpg") != 0 )
+              {
+                myGraph.addLog( newLog.target, newLog.referer );
+              }
             }
 
-            if ( timeSelection == true )
+            else if ( timeSelection == true )
             {
-              // same
+              if ( newLog.hour >= hour && newLog.hour <= hour+1 )
+              {
+                myGraph.addLog( newLog.target, newLog.referer );
+              }
             }
 
-            if ( doGraph == true )
+            else
             {
-              // 
+               myGraph.addLog( newLog.target, newLog.referer );
             }
 
-            //myRead.displayLog( );
-    }
+   }
 
-    return 0;
+   // Opérations sur le graph
+   myGraph.searchTop();
+
+   if ( doGraph == true )
+   {
+      // methode du graph
+      myGraph.drawGraph();
+   }
+
+   return 0;
 
 }
 
