@@ -13,6 +13,7 @@ bool typeSelection = false;
 bool timeSelection = false;
 string fichierDot;
 int hour;
+int count=0;
 
 // Methodes
 
@@ -36,9 +37,9 @@ void getActions ( int argc, char * argv[] )
       }
     }
 
-     cout << "TYPE Selection --> " << typeSelection << endl;
+     /*cout << "TYPE Selection --> " << typeSelection << endl;
      cout << "TIME Selection --> " << timeSelection <<endl;
-     cout << "GRAPH --> " << doGraph << endl;
+     cout << "GRAPH --> " << doGraph << endl;*/
 }
 
 void displayArgs( int argc, char * argv[] )
@@ -50,13 +51,6 @@ void displayArgs( int argc, char * argv[] )
 
 }
 
-// ./analog =  arg[0]
-// -g = arg[1]
-// nomfichier.dot = argv[2]
-// -e = arg[3]
-// -t = arg [4]
-// heure = arg[5]
-// nomfichier.log = arg[6]
 int main ( int argc, char * argv[] )
 {
     //displayArgs(argc, argv);
@@ -64,7 +58,7 @@ int main ( int argc, char * argv[] )
     Read myRead = Read ( );
     // Graph myGraph = Graph();
 
-    myRead.openFile( "log.txt" );
+    myRead.openFile( "anonyme2.log" );
     Graph myGraph = Graph();
 
     // Ajout des logs
@@ -74,20 +68,27 @@ int main ( int argc, char * argv[] )
             myRead.translate( );
             newLog = myRead.getMyLog();
 
-            if ( typeSelection == true )
+            if ( typeSelection == true && timeSelection == false )
             {
-              if ( newLog.targetExtension.compare("css") != 0 || newLog.targetExtension.compare("jpg") != 0 )
+              if ( newLog.targetExtension != "css" && newLog.targetExtension != "jpg" && newLog.targetExtension != "gif" && newLog.targetExtension != "ico")
               {
                 myGraph.addLog( newLog.target, newLog.referer );
               }
             }
 
-            else if ( timeSelection == true )
+            else if ( timeSelection == true && typeSelection == false )
             {
               if ( newLog.hour >= hour && newLog.hour <= hour+1 )
               {
                 myGraph.addLog( newLog.target, newLog.referer );
               }
+            }
+            else if ( typeSelection == true && timeSelection == true )
+            {
+                if ( newLog.targetExtension != "css" && newLog.targetExtension != "jpg" && newLog.targetExtension != "gif" && newLog.targetExtension != "ico" && newLog.hour >= hour && newLog.hour <= hour+1 )
+                {
+                    myGraph.addLog( newLog.target, newLog.referer );
+                }
             }
 
             else
@@ -96,48 +97,14 @@ int main ( int argc, char * argv[] )
             }
 
    }
-
+   //myGraph.displayTargets();
    // Opérations sur le graph
    myGraph.searchTop();
 
    if ( doGraph == true )
    {
-      // methode du graph
-      myGraph.drawGraph();
+      myGraph.drawGraph(fichierDot);
    }
 
    return 0;
-
 }
-
-
-
-/*
-while ( myRead.endOfFile( ) == false )
-{
-        Log newLog;
-        //Graph myGraph;
-
-        myRead.translate( );
-
-        /*for ( int i=1; i<=argc; i++)
-        {
-            if ( strcmp(argv[i], '-e') == 0 )
-            {
-                // use
-            }
-
-            if ( strcmp(argv[i], '-t') == 0 )
-            {
-                // use argv[i+1] to get hour
-            }
-        }
-
-
-        newLog = myRead.getMyLog();
-
-        //myGraph.addLog( newLog.target, newLog.referer );
-
-        myRead.displayLog( );
-      }
-*/

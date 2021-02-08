@@ -1,9 +1,9 @@
 /*************************************************************************
-                           Read  -  description
+                              Read -  description
                              -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
+    début                : 12/2020
+    copyright            : (C) 2020 par B.Pluvinet et M.Moutot
+    e-mail               : berenice.pluvinet@insa-lyon.fr ; matthieu.moutot@insa-lyon.fr
 *************************************************************************/
 
 //---------- Interface de la classe <Read> (fichier Read.h) ----------------
@@ -45,7 +45,7 @@ typedef struct Log
 } Log;
 //------------------------------------------------------------------------
 // Rôle de la classe <Read>
-//  Lit un fichier de log Apache
+// Lit un fichier de log Apache
 //
 //------------------------------------------------------------------------
 
